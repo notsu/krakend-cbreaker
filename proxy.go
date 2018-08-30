@@ -43,7 +43,8 @@ func NewCbRequest(cb *HystrixCommand, next proxy.Proxy) proxy.Proxy {
 			var err error
 			response, err = next(ctx, request)
 			return err
-		}, func() error {
+		}, func(err error) error {
+			// do this when services are down
 			return nil
 		})
 		return response, err
