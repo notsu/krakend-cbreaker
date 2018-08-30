@@ -7,7 +7,8 @@ package cbreaker
 
 import (
 	"context"
-
+	"fmt"
+	
 	"github.com/devopsfaith/krakend/config"
 	"github.com/devopsfaith/krakend/proxy"
 )
@@ -42,9 +43,11 @@ func NewCbRequest(cb *HystrixCommand, next proxy.Proxy) proxy.Proxy {
 		err := cb.Execute(func() error {
 			var err error
 			response, err = next(ctx, request)
+			fmt.Println("execute run !!")
 			return err
 		}, func(err error) error {
 			// do this when services are down
+			fmt.Println("fallback call !!")
 			return nil
 		})
 		return response, err
