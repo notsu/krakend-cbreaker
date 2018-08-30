@@ -43,7 +43,9 @@ func NewCbRequest(cb *HystrixCommand, next proxy.Proxy) proxy.Proxy {
 			var err error
 			response, err = next(ctx, request)
 			return err
-		}, nil)
+		}, func() error {
+			return nil
+		})
 		return response, err
 	}
 }
